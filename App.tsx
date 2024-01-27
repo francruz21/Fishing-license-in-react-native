@@ -9,7 +9,7 @@ const App = () => {
   return (
     <SafeAreaView style={{flex : 1}}>
 
-    <MiComponente/>
+    <Holamundo/>
 
     </SafeAreaView>
    
