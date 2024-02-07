@@ -1,0 +1,101 @@
+                             Liberias instaladas
+
+-vector icons (para los iconos) (se hacen modificaciones en el build grandle)
+
+-npm install react-native-image-picker (para cargar imagenes del dispositvo)
+
+-npm install --save @react-native-firebase/app
+                  ( instalar firebase en react native)
+creo la base de datos en fire base y luego tengo que enlazar firebase con el nombreid de la aplicacion .. la cual encuentro en build.gradle android/app/src/build.grandle
+luego descargo un json google-service y lo instalo al nivel de la carpeta app/src
+
+
+Actualizar archivos de configuración en Android e iOS:
+
+En el archivo android/build.gradle, agrega la siguiente dependencia en el bloque dependencies del bloque buildscript:
+
+gradle
+Copy code
+classpath("com.google.gms:google-services:4.4.0")
+Además, en el mismo archivo, agrega la siguiente línea al final del archivo:
+
+gradle
+Copy code
+apply plugin: 'com.google.gms.google-services'
+En el archivo android/app/build.gradle, asegúrate de tener la siguiente línea en el bloque dependencies:
+
+gradle
+Copy code
+implementation platform('com.google.firebase:firebase-bom:30.0.0')
+Y en el mismo archivo, al final del archivo, agrega:
+
+gradle
+Copy code
+apply plugin: 'com.google.gms.google-services'
+
+
+--------------------- https://rnfirebase.io/auth/usage-------------
+
+
+npm install styled-components (estilizar componentes de react native )
+
+npm install @react-navigation/native @react-navigation/stack (este sirve para la navegacion entre screens)
+npm install @react-navigation/native
+npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/viewpager
+npm install @react-navigation/stack
+
+
+
+  <NavigationContainer>
+      <Stack.Navigator>
+          <Stack.Screen name = 'Loginfirebase' component={Logs} />
+          <Stack.Screen name = 'FormRegister' component={Formulario} />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+
+
+
+
+
+
+
+
+
+    const App = () => {
+  
+  
+    async function loadData(){
+      try {
+        const usersSnapshot = await firestore().collection('users').get();
+        const usersData = usersSnapshot.docs.map(doc => doc.data());
+        console.log(usersData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  
+    useEffect(() => {
+      loadData();
+    }, []);
+
+  
+
+
+  return (
+  <View>
+
+    <Text> hola mundos </Text>
+  </View>
+
+
+
+  );
+};
+
+export default App;
+
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> permisos para  subir archivos del cel a internet
+
+
+npm install mercadopago (para  instalr mercado pago)

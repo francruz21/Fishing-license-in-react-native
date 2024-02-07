@@ -23,7 +23,8 @@ const Login = () => {
           <TouchableOpacity style={styles.loginButton}>
             <Text style={styles.buttonText}>Ingresar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.createAccountButton}>
+          <TouchableOpacity  style={styles.createAccountButton}>
+            
             <Text style={styles.createAccountText}>Crear cuenta</Text>
           </TouchableOpacity>
         </View>
@@ -35,7 +36,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#66cdaa',
-    flex: 1,
+   
     resizeMode: 'cover',
     justifyContent: 'center',
   },

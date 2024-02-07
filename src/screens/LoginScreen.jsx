@@ -1,8 +1,34 @@
-import React from 'react';
+// En LoginScreen.tsx
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const LoginScreen = () => {
+const LoginScreen = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    // Aquí deberías tener una constante que contenga la información de los usuarios
+    const users = [
+      { id: 1, email: 'user', password: 'user' },
+      { id: 2, email: 'usuario2@example.com', password: 'password2' },
+      // Agrega más usuarios según sea necesario
+    ];
+
+    // Verifica si existe un usuario con el email y la contraseña proporcionados
+    const user = users.find((user) => user.email === email && user.password === password);
+
+    if (user) {
+      // Si el usuario existe, llama a la función onLogin con el usuario
+      onLogin(user);
+      setError('');
+    } else {
+      // Si no, muestra un mensaje de error
+      setError('Credenciales inválidas');
+    }
+  };
+
   return (
     <View style={styles.background}>
       <View style={styles.container}>
@@ -14,23 +40,26 @@ const LoginScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Correo"
+            onChangeText={(text) => setEmail(text)}
           />
           <TextInput
             style={styles.input}
             placeholder="Contraseña"
             secureTextEntry
+            onChangeText={(text) => setPassword(text)}
           />
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.buttonText}>Ingresar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.createAccountButton}>
-            <Text style={styles.createAccountText}>Crear cuenta</Text>
-          </TouchableOpacity>
+          <Text style={styles.errorText}>{error}</Text>
         </View>
       </View>
     </View>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   background: {

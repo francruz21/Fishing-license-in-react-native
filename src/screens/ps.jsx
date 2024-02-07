@@ -1,33 +1,69 @@
-import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 50,
-  },
-  tinyLogo: {
-    width: 50,
-    height: 50,
-  },
-  logo: {
-    width: 66,
-    height: 58,
-  },
-});
+const Imagess = () => {
+  const [selectImage, setSelectImage] = useState('');
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
 
-const DisplayAnImage = () => {
+  const imagePicker = () => {
+    let options = {
+      storageOptions: {
+        path: 'image',
+      },
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        setSelectImage(response.assets[0].uri);
+        setIsButtonVisible(false);
+        console.log(response);
+      }
+    });
+  };
+
   return (
-    <View style={styles.container}>
-     
-      <Image
-        style={styles.tinyLogo}
-        source={{
-          uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        }}
-      />
-      
-    </View>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+      <View>
+        {selectImage ? (
+          <Image style={{ height: 400, width: '100%' }} source={{ uri: selectImage }} />
+        ) : (
+          <Text>No hay imagen seleccionada</Text>
+        )}
+      </View>
+
+      {isButtonVisible && (
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => imagePicker()} style={styles.button}>
+            <Text style={styles.buttonText}>Galleria</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </SafeAreaView>
   );
 };
 
-export default DisplayAnImage;
+const styles = StyleSheet.create({
+  container: {
+    height: 400,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    marginTop: 20,
+    height: 50,
+    width: '60%',
+    backgroundColor: 'blue',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+  },
+});
+
+export default Imagess;
+
