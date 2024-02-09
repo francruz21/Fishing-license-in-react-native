@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, Image, ScrollView } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -46,9 +46,20 @@ const RegistroScreen = () => {
   };
 
   const registrarUsuario = async () => {
+    // Verificar si algún campo está vacío
+    if (!nombre || !apellido || !dni || !provincia || !correo || !contraseña || !foto) {
+      Alert.alert('Todos los campos son obligatorios, incluyendo la foto');
+      return;
+    }
+
     try {
       // Registra al usuario en Firebase Authentication
       const credencial = await firebase.auth().createUserWithEmailAndPassword(correo, contraseña);
+
+      // Actualiza el perfil del usuario con el nombre
+      await credencial.user.updateProfile({
+        displayName: `${nombre} ${apellido}`
+      });
 
       // Obtiene el ID único del usuario registrado
       const usuarioID = credencial.user.uid;
@@ -69,17 +80,15 @@ const RegistroScreen = () => {
         fechaVencimiento: firebase.firestore.FieldValue.serverTimestamp(), // Puedes ajustar la fecha de vencimiento según tus necesidades
       });
 
-      // Sube la foto a Firebase Storage si se seleccionó una
-      if (foto) {
-        const referencia = firebase.storage().ref(`fotosUsuarios/${usuarioID}`);
-        await referencia.putFile(foto);
-        const urlFoto = await referencia.getDownloadURL();
+      // Sube la foto a Firebase Storage
+      const referencia = firebase.storage().ref(`fotosUsuarios/${usuarioID}`);
+      await referencia.putFile(foto);
+      const urlFoto = await referencia.getDownloadURL();
 
-        // Actualiza el documento en Firestore con la URL de la foto
-        await firebase.firestore().collection('pescadores').doc(usuarioID).update({
-          fotoUrl: urlFoto,
-        });
-      }
+      // Actualiza el documento en Firestore con la URL de la foto
+      await firebase.firestore().collection('pescadores').doc(usuarioID).update({
+        fotoUrl: urlFoto,
+      });
 
       console.log('Usuario registrado con éxito');
       Alert.alert('Usuario registrado con éxito');
@@ -91,63 +100,67 @@ const RegistroScreen = () => {
 
   return (
     <View style={styles.background}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Regístrate</Text>
-        <FormContainer style={styles.formContainer}>
-          <Text>Nombre:</Text>
-          <TextInput
-            placeholder="Nombre"
-            value={nombre}
-            onChangeText={setNombre}
-            style={styles.input}
-          />
-          <Text>Apellido:</Text>
-          <TextInput
-            placeholder="Apellido"
-            value={apellido}
-            onChangeText={setApellido}
-            style={styles.input}
-          />
-          <Text>DNI:</Text>
-          <TextInput
-            placeholder="DNI"
-            value={dni}
-            onChangeText={setDNI}
-            keyboardType="numeric"
-            style={styles.input}
-          />
-          <Text>Provincia:</Text>
-          <TextInput
-            placeholder="Provincia"
-            value={provincia}
-            onChangeText={setProvincia}
-            style={styles.input}
-          />
-          <Text>Correo:</Text>
-          <TextInput
-            placeholder="Correo Electrónico"
-            value={correo}
-            onChangeText={setCorreo}
-            style={styles.input}
-          />
-          <Text>Contraseña:</Text>
-          <TextInput
-            placeholder="Contraseña"
-            value={contraseña}
-            onChangeText={setContraseña}
-            secureTextEntry
-            style={styles.input}
-          />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Regístrate</Text>
+          <FormContainer style={styles.formContainer}>
+            <Text>Nombre:</Text>
+            <TextInput
+              placeholder="Nombre"
+              value={nombre}
+              onChangeText={setNombre}
+              style={styles.input}
+            />
+            <Text>Apellido:</Text>
+            <TextInput
+              placeholder="Apellido"
+              value={apellido}
+              onChangeText={setApellido}
+              style={styles.input}
+            />
+            <Text>DNI:</Text>
+            <TextInput
+              placeholder="DNI"
+              value={dni}
+              onChangeText={setDNI}
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            <Text>Provincia:</Text>
+            <TextInput
+              placeholder="Provincia"
+              value={provincia}
+              onChangeText={setProvincia}
+              style={styles.input}
+            />
+            <Text>Correo:</Text>
+            <TextInput
+              placeholder="Correo Electrónico"
+              value={correo}
+              onChangeText={setCorreo}
+              style={styles.input}
+            />
+            <Text>Contraseña:</Text>
+            <TextInput
+              placeholder="Contraseña"
+              value={contraseña}
+              onChangeText={setContraseña}
+              secureTextEntry
+              style={styles.input}
+            />
 
-          <Button title="Seleccionar Foto" onPress={imagePicker} />
+            <Button title="Seleccionar Foto" onPress={imagePicker} />
 
-          {foto && (
-            <Image source={{ uri: foto }} style={{ width: 200, height: 200, marginTop: 10 }} />
-          )}
-
-          <Button title="Registrar" onPress={registrarUsuario} />
-        </FormContainer>
-      </View>
+            {foto && (
+              <Image source={{ uri: foto }} style={{ width: 200, height: 200, marginTop: 10 }} />
+            )}
+            <View>
+              <Text></Text>
+            </View>
+            <Button title="Registrar" onPress={registrarUsuario} />
+          </FormContainer>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -189,6 +202,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'white',
     borderRadius: 5,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

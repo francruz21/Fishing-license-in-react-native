@@ -99,3 +99,10 @@ export default App;
 
 
 npm install mercadopago (para  instalr mercado pago)
+
+
+npm install react-native-maps (instalar el react maps)
+
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> 
+    los permisos
