@@ -51,11 +51,6 @@ const ChatScreen = () => {
 
 
 
-
-
-
-
-
   const uploadImage = async () => {
     try {
       if (!imageURI) {

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
 import firestore from '@react-native-firebase/firestore';
 import Carnet from './Carnet';
 import Icon from 'react-native-vector-icons/Ionicons';
 const Profile = ({ route }) => {
   const { userId } = route.params;
-  const navigation = useNavigation(); 
+  const navigation = useNavigation(); // Obtén la navegación
 
   const [userData, setUserData] = useState(null);
   const [userCarnet, setUserCarnet] = useState(null);
   const [formattedFechaVencimiento, setFormattedFechaVencimiento] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(0);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -57,13 +57,12 @@ const Profile = ({ route }) => {
       } catch (error) {
         console.error('Error al obtener datos del usuario:', error.message);
       } finally {
-        setLoading(false); 
-       
+        setLoading(false); // Marcar la carga como completada después de obtener los datos
       }
     };
 
     fetchUserData();
-  }, [userId,refresh],);
+  }, [userId]);
 
   const signOutAndNavigateToLogin = async () => {
     try {
@@ -71,11 +70,6 @@ const Profile = ({ route }) => {
     } catch (error) {
       console.error('Error al cerrar sesión:', error.message);
     }
-  };
-
-  
-  const Refreshc = () => {
-    setRefresh(prev => prev + 1);
   };
 
   const goToChatScreen = () => {
@@ -119,7 +113,7 @@ const Profile = ({ route }) => {
             apellido={userData.apellido}
             dni={userData.dni}
             codigoCarnet={userId}
-            fechaVencimientos={formattedFechaVencimiento}
+            fechaVencimiento={formattedFechaVencimiento}
             habilitado={userCarnet.habilitado}
             fotoUrl={userData.fotoUrl}
           />
@@ -131,11 +125,11 @@ const Profile = ({ route }) => {
         <Text>No se encontraron datos del perfil.</Text>
       )}
         <View style={styles.navBar}>
-        <TouchableOpacity onPress={Refreshc} >
+        <TouchableOpacity >
         <Icon name="home" size={30} color="white" />
         </TouchableOpacity>
         <TouchableOpacity  onPress={goToCheckout}>
-        <Icon name="wallet-outline" size={30} color="white" />
+        <Icon name="card-outline" size={30} color="white" />
         </TouchableOpacity>
         <TouchableOpacity  onPress={signOutAndNavigateToLogin}>
         <Icon name="exit-outline" size={30} color="white" />
@@ -185,17 +179,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'black', 
+    backgroundColor: 'black', // Color de fondo de la barra de navegación
     padding: 10,
   },
   navBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between', // Distribuye los botones de manera uniforme
     alignItems: 'center',
     borderColor :'white',
-    backgroundColor: '#600000', 
-        paddingVertical: 10,
-    paddingHorizontal: 20,   },
+    backgroundColor: '#590900', // Color de fondo de la barra de navegación
+    paddingVertical: 10,
+    paddingHorizontal: 20, // Añade un espacio horizontal entre los botones
+  },
 });
 
 export default Profile;

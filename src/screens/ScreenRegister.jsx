@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, Image, ScrollView , TouchableOpacity,ImageBackground} from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import '@react-native-firebase/storage';
 import styled from 'styled-components/native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
 
 // Configura la aplicación con tus credenciales de Firebase
 const firebaseConfig = {
@@ -29,6 +30,7 @@ const RegistroScreen = () => {
   const [dni, setDNI] = useState('');
   const [provincia, setProvincia] = useState('');
   const [foto, setFoto] = useState(null);
+  const navigation = useNavigation(); // Obtiene el objeto de navegación
 
   const imagePicker = () => {
     let options = {
@@ -92,80 +94,188 @@ const RegistroScreen = () => {
 
       console.log('Usuario registrado con éxito');
       Alert.alert('Usuario registrado con éxito');
+
+      // Redirige al usuario a la pantalla de inicio de sesión después del registro exitoso
+      navigation.navigate('Loginfirebase'); // Reemplaza 'LoginScreen' con el nombre de tu pantalla de inicio de sesión
     } catch (error) {
-      console.error('Error al registrar usuario:', error.message);
+      
       Alert.alert('Error al registrar usuario');
     }
   };
 
   return (
-    <View style={styles.background}>
+    <View style={styles.container2}>
+    <ImageBackground
+      source={require('../screens/fondos2.jpg')}
+      style={styles.image}>
+  
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
-          <Text style={styles.title}>Regístrate</Text>
+        
           <FormContainer style={styles.formContainer}>
-            <Text>Nombre:</Text>
+          <Text style={styles.title}>Sing ig</Text>
+            <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:80,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        Nombre
+      </Text>
             <TextInput
-              placeholder="Nombre"
+              
               value={nombre}
               onChangeText={setNombre}
               style={styles.input}
             />
-            <Text>Apellido:</Text>
+           <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:132,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        Apellido
+      </Text>
             <TextInput
-              placeholder="Apellido"
+             
               value={apellido}
               onChangeText={setApellido}
               style={styles.input}
             />
-            <Text>DNI:</Text>
+             <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:189,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        DNI
+      </Text>
             <TextInput
-              placeholder="DNI"
+              
               value={dni}
               onChangeText={setDNI}
               keyboardType="numeric"
               style={styles.input}
             />
-            <Text>Provincia:</Text>
+         <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:245,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        Provincia
+      </Text>
             <TextInput
-              placeholder="Provincia"
+           
               value={provincia}
               onChangeText={setProvincia}
               style={styles.input}
             />
-            <Text>Correo:</Text>
+             <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:300,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        Correo
+      </Text>
             <TextInput
-              placeholder="Correo Electrónico"
+              
               value={correo}
               onChangeText={setCorreo}
               style={styles.input}
             />
-            <Text>Contraseña:</Text>
+              <Text
+        style={{
+            fontWeight: 'bold',
+          position: 'absolute',
+          top:355,
+          left:25,
+          zIndex: 50,
+          color:'#7B4368',
+          fontSize :12,
+          backgroundColor: 'white',
+          paddingHorizontal:7,
+        }}>
+        Contraseña
+      </Text>
             <TextInput
-              placeholder="Contraseña"
+             
               value={contraseña}
               onChangeText={setContraseña}
               secureTextEntry
               style={styles.input}
             />
 
-            <Button title="Seleccionar Foto" onPress={imagePicker} />
-
+       
+            <TouchableOpacity style={styles.button} onPress={imagePicker}>
+                <Text style={styles.buttonText}>Seleccionar Foto</Text>
+              </TouchableOpacity>
             {foto && (
               <Image source={{ uri: foto }} style={{ width: 200, height: 200, marginTop: 10 }} />
             )}
-            <View>
-              <Text></Text>
-            </View>
-            <Button title="Registrar" onPress={registrarUsuario} />
+           
+            <TouchableOpacity style={styles.button} onPress={registrarUsuario}>
+                <Text style={styles.buttonText}>Registrarse</Text>
+              </TouchableOpacity>
+           
           </FormContainer>
         </View>
       </ScrollView>
+  
+    </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container2: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+
+
+  button: {
+    backgroundColor: '#7B4368',
+    height: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+  },
   background: {
     backgroundColor: '#66cdaa',
     flex: 1,
@@ -178,10 +288,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   formContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: '#fff',
     padding: 20,
-    borderRadius: 10,
-    width: '80%',
+    width: '100%',
+    borderTopRightRadius: 100,
+    borderBottomLeftRadius: 60,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -189,24 +300,32 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 45,
-    fontStyle: 'italic',
-    color: 'black',
-    marginBottom: 20,
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#7B4368',
+    alignSelf: 'center',
+    paddingBottom: 20,
   },
   input: {
     height: 40,
+    width :300,
     borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
+    borderWidth: 2,
+    marginBottom: 15,
     paddingHorizontal: 10,
     backgroundColor: 'white',
     borderRadius: 5,
+    borderColor :'#7B4368'
   },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 

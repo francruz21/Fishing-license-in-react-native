@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { firebase } from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
-import Profile from './Profile';
+
 
 const Logs = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -48,7 +47,7 @@ const Logs = ({ navigation }) => {
     <View style={styles.background}>
       <View style={styles.container}>
         {user ? (
-          <View>
+          <View >
             <Text>Bienvenido, {user.email}</Text>
             <Button title="Cerrar sesión" onPress={signOut} />
           </View>
@@ -82,7 +81,7 @@ const Logs = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </View> 
     </View>
   );
 };
